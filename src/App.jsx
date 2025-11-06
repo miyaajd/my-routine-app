@@ -123,7 +123,6 @@ function App() {
     { name: "한컵", value: 180 },
     { name: "250mL", value: 250 },
     { name: "500mL", value: 500 },
-    { name: "1L", value: 1000 },
     { name: "RESET", value: 0 },
   ];
   return (
