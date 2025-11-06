@@ -1,0 +1,87 @@
+/* App */
+.App {
+  margin: 0 auto;
+  max-width: 420px;
+  height: 100dvh;
+//   background-color: #efefef;
+  text-align: center;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  h2 {
+    padding: 30px 0 50px 0;
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .main {
+    width: 100%;
+    position: relative;
+    img {
+      width: 30%;
+      display: block;
+      margin: auto;
+    }
+    // 목표 진행률
+    .progressState {
+      width: 40px;
+      position: absolute;
+      top: 0;
+      left: 70%;
+      // background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .stick {
+        margin: 10px 0;
+        position: relative;
+        width: 10px;
+        height: 330px;
+        border-radius: 5px;
+        background-color: #e1e1e1;
+        box-shadow: 0 0 4px 4px #efefef;
+        .progress {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          max-height: 100%;
+          height: 0;
+          border-radius: 5px;
+          background-color: #fff;
+          transition: all 0.3s ease;
+        }
+      }
+    }
+    // 목표설정
+    .goal {
+      margin: 60px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      button{
+        width: 100px;
+        padding: 8px 10px;
+        background-color: #fff;
+        border: none;
+        border-radius: 50px;
+        box-shadow: 0 0 4px 4px #efefef;
+      }
+    }
+    // 기록버튼들
+    .buttons{
+        padding: 0 30px 30px ;
+        display: flex;
+        justify-content: space-between;
+        button{
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background-color: #fff;
+            border: none;
+            box-shadow: 0 0 4px 4px #efefef;
+        }
+    }
+  }
+}
