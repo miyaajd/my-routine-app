@@ -9,6 +9,7 @@ function Workout() {
   return (
     <div className="workout">
       <h2>{menus[1].title}</h2>
+      <p>* {menus[1].routine} *</p>
     </div>
   );
 }

@@ -150,6 +150,7 @@ function Hydration() {
   return (
     <div className="hydration">
       <h2>{menus[0].title}</h2>
+      <p>* {menus[0].routine} *</p>
       <div className="main">
         <img src="/images/bottle.png" alt="bottle" />
         {/* 목표 진행률 */}
