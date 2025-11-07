@@ -1,26 +1,29 @@
 /* font */
 :root {
-  --font-sans: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR",
+  --font-sans: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR",
     "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     sans-serif;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   font-family: var(--font-sans);
 }
 
 /*  */
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 body {
   margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -30,7 +33,11 @@ div {
   box-sizing: border-box;
 }
 
-button{
-    cursor: pointer;
-    color: #333;
+button {
+  cursor: pointer;
+  color: #333;
+}
+a {
+  color: #333;
+  text-decoration: none;
 }
