@@ -13,13 +13,6 @@ function getTodayStr() {
   return d.toISOString().split("T")[0];
 }
 
-// 자정까지 남은 ms
-function msUntilNextMidnight() {
-  const now = new Date();
-  const next = new Date(now);
-  next.setHours(24, 0, 0, 0); // 오늘 자정+24h = 내일 00:00
-  return next - now;
-}
 
 // 초기 상태를 localStorage에서 읽어오는 함수
 function loadInitialState() {
@@ -47,8 +40,6 @@ function Hydration() {
   const [drunk, setDrunk] = useState(() => initial.drunk);
   // 알림 중복방지
   const alertRef = useRef(initial.alerted);
-  // 리셋타이머
-  const resetTimerRef = useRef(null);
 
   // 로컬에 저장
   useEffect(() => {
@@ -61,17 +52,35 @@ function Hydration() {
 
   // 자정 자동 초기화 예약
   useEffect(() => {
-    const schedule = () => {
-      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
-      resetTimerRef.current = setTimeout(() => {
-        setDrunk(0);
+    
+    const handleResume = () => {
+      const today = getTodayStr();
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+
+      // 저장된 날짜와 오늘이 다르면 리셋
+      if (!saved || saved.date !== today) {
         setGoal(0);
+        setDrunk(0);
         alertRef.current = false;
-        schedule(); //다음 자정도 예약
-      }, msUntilNextMidnight());
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ goal: 0, drunk: 0, date: today, alerted: false })
+        );
+      }
     };
-    schedule();
-    return () => resetTimerRef.current && clearTimeout(resetTimerRef.current);
+    handleResume();
+
+    const onVisible = () => {
+      if (document.visibilityState === "visible") handleResume();
+    };
+    window.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", handleResume);
+
+    return () => {
+      window.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", handleResume);
+    };
   }, []);
 
   // 목표입력버튼 누르면 실행

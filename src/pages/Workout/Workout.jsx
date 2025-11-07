@@ -8,7 +8,7 @@ import menus from "../../data/menu";
 // 로컬에 저장할 키
 const STORAGE_KEY = "workout-state";
 // 프로세스 100% 기준값 고정
-const MAX_UNITS = 600; 
+const MAX_UNITS = 600;
 
 // 오늘날짜
 function getTodayStr() {
@@ -16,13 +16,6 @@ function getTodayStr() {
   return d.toISOString().split("T")[0];
 }
 
-// 자정까지 남은 ms
-function msUntilNextMidnight() {
-  const now = new Date();
-  const next = new Date(now);
-  next.setHours(24, 0, 0, 0); // 오늘 자정+24h = 내일 00:00
-  return next - now;
-}
 
 // 초기 상태를 localStorage에서 읽어오는 함수
 function loadInitialState() {
@@ -31,7 +24,7 @@ function loadInitialState() {
     const today = getTodayStr();
     if (saved && saved.date === today) {
       return {
-        goal: String(saved.goal) || 0,
+        goal: saved.goal ? String(saved.goal) : "입력하세요",
         worked: Number(saved.worked) || 0,
         // 100% 달성시 뜨는 alert창을 이미 봤다면 상태저장
         alerted: !!saved.alerted, //저장된 alerted 그대로 불러오기
@@ -50,8 +43,6 @@ function Workout() {
   const [worked, setWorked] = useState(() => initial.worked);
   // 알림 중복방지
   const alertRef = useRef(initial.alerted);
-  // 리셋타이머
-  const resetTimerRef = useRef(null);
 
   // 로컬에 저장
   useEffect(() => {
@@ -64,17 +55,37 @@ function Workout() {
 
   // 자정 자동 초기화 예약
   useEffect(() => {
-    const schedule = () => {
-      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
-      resetTimerRef.current = setTimeout(() => {
-        setWorked(0);
+    const handleResume = () => {
+      const today = getTodayStr();
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      // 저장된 날짜와 오늘이 다르면 리셋
+      if (!saved || saved.date !== today) {
         setGoal("입력하세요");
+        setWorked(0);
         alertRef.current = false;
-        schedule(); //다음 자정도 예약
-      }, msUntilNextMidnight());
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            goal: "입력하세요",
+            worked: 0,
+            date: today,
+            alerted: false,
+          })
+        );
+      }
     };
-    schedule();
-    return () => resetTimerRef.current && clearTimeout(resetTimerRef.current);
+    handleResume();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") handleResume();
+    };
+    window.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", handleResume);
+
+    return () => {
+      window.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", handleResume);
+    };
   }, []);
 
   // 운동입력버튼 누르면 실행
