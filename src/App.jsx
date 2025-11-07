@@ -28,10 +28,12 @@ function loadInitialState() {
       return {
         goal: Number(saved.goal) || 0,
         drunk: Number(saved.drunk) || 0,
+        // 100% 달성시 뜨는 alert창을 이미 봤다면 상태저장
+        alerted: !!saved.alerted, //저장된 alerted 그대로 불러오기
       };
     }
   } catch {}
-  return { goal: 0, drunk: 0 };
+  return { goal: 0, drunk: 0, alerted: false };
 }
 
 function App() {
@@ -42,7 +44,7 @@ function App() {
   // 마신양 저장
   const [drunk, setDrunk] = useState(() => initial.drunk);
   // 알림 중복방지
-  const alertRef = useRef(false);
+  const alertRef = useRef(initial.alerted);
   // 리셋타이머
   const resetTimerRef = useRef(null);
 
@@ -51,7 +53,7 @@ function App() {
     const today = getTodayStr();
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ goal, drunk, date: today })
+      JSON.stringify({ goal, drunk, date: today, alerted: alertRef.current })
     );
   }, [goal, drunk]);
 
@@ -89,6 +91,18 @@ function App() {
 
   // 핸들드링크 (기록버튼 누르면 실행)
   const handleDrink = (value) => {
+    // 입력버튼일 경우 입력값을 value에 저장
+    if (value === null) {
+      const input = prompt("입력하세요 (mL 단위)");
+      if (!input) return;
+      const parsed = Number(input);
+      if (isNaN(parsed) || parsed <= 0) {
+        alert("숫자만 입력해주세요.");
+        return;
+      }
+      value = parsed; //입력값으로 value 재할당
+    }
+
     if (value === 0) {
       // 리셋
       setDrunk(0);
@@ -114,6 +128,11 @@ function App() {
   useEffect(() => {
     if (goal > 0 && percent === 100 && !alertRef.current) {
       alertRef.current = true;
+      // 알림창 본상태를 alerted 로 저장
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ goal, drunk, date: getTodayStr(), alerted: true })
+      );
       alert("오늘 목표달성에 성공하였습니다 !");
     }
   }, [percent, goal]);
@@ -121,8 +140,8 @@ function App() {
   // 버튼이름 + 값
   const buttons = [
     { name: "한컵", value: 180 },
-    { name: "250mL", value: 250 },
     { name: "500mL", value: 500 },
+    { name: "입력", value: null }, //입력 버튼 누르면 prompt - 입력값을 value에 저장
     { name: "RESET", value: 0 },
   ];
   return (
