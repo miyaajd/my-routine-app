@@ -11,6 +11,7 @@ import Menu from "./components/Menu";
 // css
 import "./App.css";
 import "./App.scss";
+import Learning from "./pages/Learning/Learning";
 
 function App() {
   // 메뉴 오픈 상태저장
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<Hydration />}></Route>
           <Route path="/hydration" element={<Hydration />}></Route>
           <Route path="/workout" element={<Workout />}></Route>
+          <Route path="/learning" element={<Learning />}></Route>
         </Routes>
       </div>
     </BrowserRouter>

@@ -6,8 +6,11 @@ const menus = [
     routine: "day",
     path: "hydration",
   },
-  { id: 2, title: "Workout Routine", routine: "week",
+  { id: 2, title: "Workout Routine", routine: "day",
     path: "workout",
+   },
+  { id: 3, title: "Learning Routine", routine: "day",
+    path: "learning",
    },
 ];
 
