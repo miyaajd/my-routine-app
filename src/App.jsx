@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 // 라우터
 import { BrowserRouter, Routes, Route } from "react-router-dom";

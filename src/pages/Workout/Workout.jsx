@@ -116,7 +116,7 @@ function Workout() {
       );
       alert("오늘 목표달성에 성공하였습니다 !");
     }
-  }, [percent]);
+  }, [percent, goal, worked]);
 
   // 핸들드링크 (기록버튼 누르면 실행)
   const handelWorked = (value) => {

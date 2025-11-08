@@ -149,7 +149,7 @@ function Hydration() {
       );
       alert("오늘 목표달성에 성공하였습니다 !");
     }
-  }, [percent, goal]);
+  }, [percent, goal, drunk]);
 
   // 버튼이름 + 값
   const buttons = [

@@ -188,7 +188,7 @@ const Learning = () => {
       );
       alert("오늘 목표달성에 성공하였습니다 !");
     }
-  }, [percent]);
+  }, [percent, goal, worked, completed, buttons]);
 
   // 핸들워크드 (기록버튼 누르면 실행)
   const handelWorked = (name, value, index) => {
